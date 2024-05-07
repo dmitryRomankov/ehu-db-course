@@ -1,11 +1,10 @@
--- Database for climbers, climbing's and mountains.
-
 create table mountain_club (
 	club_id serial primary key,
 	club_name text not null
 );
 
 alter table mountain_club add column climber_id int not null;
+alter table mountain_club add column record_ts date default CURRENT_DATE;
 
 alter table mountain_club
 add constraint fk_climber_id
@@ -28,6 +27,7 @@ create table climbers (
 );
 
 alter table climbers add column club_id int not null;
+alter table climbers add column record_ts date default CURRENT_DATE;
 
 alter table climbers
 add constraint fk_club_id
@@ -44,11 +44,9 @@ create table climber_address (
 	address_id serial primary key
 );
 
-alter table climber_address
-add column address_title text;
-
-alter table climber_address
-add column climber_id int;
+alter table climber_address add column address_title text;
+alter table climber_address add column climber_id int;
+alter table climber_address add column record_ts date default CURRENT_DATE;
 
 alter table climber_address
 add constraint fk_climber_address_id
@@ -67,6 +65,8 @@ create table mountains (
 	height int not null
 );
 
+alter table mountains add column record_ts date default CURRENT_DATE;
+
 alter table mountains 
 add constraint check_positive check (height > 0);
 
@@ -82,6 +82,8 @@ create table membership (
 	climber_id int not null,
 	club_id int not null
 );
+
+alter table membership add column record_ts date default CURRENT_DATE;
 
 alter table membership
 add constraint fk_membership_climber_id
@@ -109,6 +111,8 @@ create table climbing (
 	climber_id int not null,
 );
 
+alter table climbing add column record_ts date default CURRENT_DATE;
+
 alter table climbing
 add constraint fk_climbing_climber_id
 foreign key (climber_id)
@@ -130,6 +134,8 @@ create table area (
 	area_name text unique not null,
 );
 
+alter table area add column record_ts date default CURRENT_DATE;
+
 insert into area (area_name)
 values 
     ('Rocky Mountains'),
@@ -141,6 +147,8 @@ create table mountain_area (
 	mountain_id int not null,
 	area_id int not null,
 );
+
+alter table mountain_area add column record_ts date default CURRENT_DATE;
 
 alter table mountain_area
 add constraint fk_mountain_area_mountain_id
@@ -163,6 +171,8 @@ create table country (
 	country_name text unique not null,
 );
 
+alter table country add column record_ts date default CURRENT_DATE;
+
 insert into country (country_name)
 values 
     ('Nepal'),
@@ -174,6 +184,8 @@ create table mountain_country (
 	mountain_id int not null,
 	country_id int not null,
 );
+
+alter table mountain_country add column record_ts date default CURRENT_DATE;
 
 alter table mountain_country
 add constraint fk_mountain_country_mountain_id
@@ -197,6 +209,8 @@ create table climbing_comment(
 	comment text
 );
 
+alter table climbing_comment add column record_ts date default CURRENT_DATE;
+
 alter table climbing_comment
 add constraint fk_climbing_comment
 foreign key (climbing_id)
@@ -207,4 +221,3 @@ values
     (1, 'Great climb, amazing views!'),
     (2, 'Tough climb but worth it!'),
     (3, 'Enjoyed every moment of the ascent.');
-
